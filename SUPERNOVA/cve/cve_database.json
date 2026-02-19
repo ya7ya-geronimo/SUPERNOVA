@@ -1,0 +1,106 @@
+{
+    "CVE-2017-0144": {
+        "description": "SMBv1 EternalBlue Remote Code Execution vulnerability used by WannaCry ransomware.",
+        "severity": "CRITICAL",
+        "port": 445,
+        "service": "smb"
+    },
+
+    "CVE-2020-0796": {
+        "description": "SMBGhost vulnerability allowing remote code execution on SMBv3.",
+        "severity": "CRITICAL",
+        "port": 445,
+        "service": "smb"
+    },
+
+    "CVE-2021-41773": {
+        "description": "Apache HTTP Server path traversal and file disclosure vulnerability.",
+        "severity": "HIGH",
+        "port": 80,
+        "service": "http"
+    },
+
+    "CVE-2021-42013": {
+        "description": "Apache HTTP Server Remote Code Execution vulnerability.",
+        "severity": "CRITICAL",
+        "port": 80,
+        "service": "http"
+    },
+
+    "CVE-2014-0160": {
+        "description": "OpenSSL Heartbleed vulnerability allowing sensitive information disclosure.",
+        "severity": "CRITICAL",
+        "port": 443,
+        "service": "https"
+    },
+
+    "CVE-2016-2183": {
+        "description": "Sweet32 vulnerability affecting SSL/TLS encryption.",
+        "severity": "MEDIUM",
+        "port": 443,
+        "service": "https"
+    },
+
+    "CVE-2015-1635": {
+        "description": "Microsoft HTTP.sys Remote Code Execution vulnerability.",
+        "severity": "CRITICAL",
+        "port": 80,
+        "service": "http"
+    },
+
+    "CVE-2011-2523": {
+        "description": "vsFTPd 2.3.4 backdoor allowing remote attackers to gain shell access.",
+        "severity": "CRITICAL",
+        "port": 21,
+        "service": "ftp"
+    },
+
+    "CVE-1999-0502": {
+        "description": "Anonymous FTP login allowed.",
+        "severity": "LOW",
+        "port": 21,
+        "service": "ftp"
+    },
+
+    "CVE-2018-15473": {
+        "description": "OpenSSH user enumeration vulnerability.",
+        "severity": "MEDIUM",
+        "port": 22,
+        "service": "ssh"
+    },
+
+    "CVE-2015-5600": {
+        "description": "OpenSSH keyboard-interactive authentication brute force vulnerability.",
+        "severity": "MEDIUM",
+        "port": 22,
+        "service": "ssh"
+    },
+
+    "CVE-2012-2122": {
+        "description": "MySQL authentication bypass vulnerability.",
+        "severity": "CRITICAL",
+        "port": 3306,
+        "service": "mysql"
+    },
+
+    "CVE-2019-0708": {
+        "description": "BlueKeep Remote Desktop Remote Code Execution vulnerability.",
+        "severity": "CRITICAL",
+        "port": 3389,
+        "service": "rdp"
+    },
+
+    "CVE-2017-5638": {
+        "description": "Apache Struts Remote Code Execution vulnerability.",
+        "severity": "CRITICAL",
+        "port": 8080,
+        "service": "http"
+    },
+
+    "CVE-2022-22965": {
+        "description": "Spring4Shell Remote Code Execution vulnerability.",
+        "severity": "CRITICAL",
+        "port": 8080,
+        "service": "http"
+    }
+}
