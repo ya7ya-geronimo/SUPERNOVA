@@ -36,7 +36,7 @@ a few specific modules are required for advanced security checks.
 
 2. Make the script executable (Linux/macOS):
 ```bash
-chmod +x supernova
+chmod +x SUPERNOVA
 
 ```
 
@@ -59,28 +59,28 @@ SUPERNOVA provides a user-friendly CLI with various flags to customize your scan
 **1. Basic Scan (Default Top 15 Ports):**
 
 ```bash
-supernova -t 192.168.1.100
+SUPERNOVA -t 192.168.1.100
 
 ```
 
 **2. Subnet Scan with Specific Ports:**
 
 ```bash
-supernova -t 10.48.170.0/24 -p 22,80,111,2049
+SUPERNOVA -t 10.48.170.0/24 -p 22,80,111,2049
 
 ```
 
 **3. Deep Scan (Top 100 Ports) with Faster Timeout:**
 
 ```bash
-supernova -t 10.48.155.187 -p top100 -s 0.5
+SUPERNOVA -t 10.48.155.187 -p top100 -s 0.5
 
 ```
 
 **4. Run Specific Security Checks Only:**
 
 ```bash
-supernova -t 192.168.1.50 --ftp --smb
+SUPERNOVA -t 192.168.1.50 --ftp --smb
 
 ```
 
