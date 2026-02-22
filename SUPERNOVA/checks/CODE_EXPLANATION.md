@@ -140,3 +140,12 @@ Contains checks for HTTP/HTTPS services.
 1.  **Scalability**: The dynamic loader (`glob` in `runner.py`) means you can add `checks/cve_checks.py` and it will work instantly.
 2.  **Reliability**: Every network interaction is wrapped in `try...except...finally` to ensure resources (sockets) are released.
 3.  **Modularity**: Checks are grouped by domain (Network vs Web) rather than one huge file or too many tiny files.
+4.  **Graceful Degradation**: The `pysmb` library is imported with a `try/except` guard and a `HAS_PYSMB` flag. If pysmb is not installed, only the SMB check is skipped — FTP, Telnet, RDP, and all other checks continue to work normally. This prevents a single missing dependency from breaking the entire checks module.
+
+---
+
+## Bug Fixes Applied (v2)
+- **pysmb Import Guard**: The top-level `from smb.SMBConnection import SMBConnection` was crashing the entire `network_checks.py` module if pysmb was missing, taking down ALL checks (FTP, Telnet, RDP). Now wrapped in `try/except`.
+- **`__init__.py` Guard**: Protected `check_smb` import so the package loads even without pysmb.
+- **Socket Cleanup**: All check functions use `finally` blocks with null-safe socket closing to prevent resource leaks.
+
