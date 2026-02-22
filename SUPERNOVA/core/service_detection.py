@@ -48,7 +48,7 @@ def detect_service_and_version(banner, port=None, target_ip=None):
         common_ports = {
             21: "FTP", 22: "SSH", 23: "Telnet", 25: "SMTP", 53: "DNS",
             80: "HTTP", 110: "POP3", 111: "rpcbind", 135: "RPC", 139: "NetBIOS", 143: "IMAP",
-            443: "HTTPS", 445: "SMB", 2049: "NFS", 3306: "MySQL", 3389: "RDP", 8080: "HTTP-Proxy"
+            443: "HTTPS", 445: "SMB", 995: "POP3S", 2049: "NFS", 3306: "MySQL", 3389: "RDP", 8080: "HTTP-Proxy"
         }
         if port in common_ports:
             return f"Unknown (Maybe: {common_ports[port]}?)", "Unknown (No Banner)"
@@ -93,6 +93,11 @@ def detect_service_and_version(banner, port=None, target_ip=None):
     elif "SMB" in banner_upper or "SAMBA" in banner_upper:
         service = "SMB (Verified)"
         version = "SMB Service Detected"
+
+    # Check for POP3 (Dovecot, etc.)
+    elif "+OK" in banner_upper or "POP3" in banner_upper:
+        service = "POP3 (Verified)"
+        version = str(banner).split('\n')[0].strip()[:50]
 
     # Fallback for known ports that sent a banner but didn't match the regex above
     else:

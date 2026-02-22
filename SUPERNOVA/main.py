@@ -10,6 +10,7 @@ current_dir = os.path.dirname(os.path.realpath(__file__))
 sys.path.insert(0, current_dir)
 
 from core.scanner import run_scan
+from checks.runner import CheckRunner
 
 def print_banner():    
     # Define ANSI color codes for a professional terminal appearance
@@ -100,7 +101,7 @@ def parse_arguments():
     parser.add_argument("-p", "--ports", dest="ports", 
                         help="Ports to scan: 'top100', 'all', '1-1000', or '22,80' (Default: top 15)")
     
-    parser.add_argument("-s", "--speed", dest="speed", type=float, default=1.0, 
+    parser.add_argument("--speed", dest="speed", type=float, default=1.0, 
                         help="Timeout in seconds per port (default: 1.0).")
 
     parser.add_argument("-o", "--output", dest="output", default="report.json", 
@@ -139,9 +140,70 @@ def main():
     
     print(f"\033[94m[*] Preparing to scan {len(target_ports)} ports...\033[0m")
 
+    # Determine which security checks to run based on CLI flags
+    run_checks = args.all or args.ftp or args.smb or args.http
+
     try:
         # Execute the core scanning engine
         scan_results = run_scan(target_ips=target_ips, scope_name=args.target, ports_to_scan=target_ports, timeout_sec=args.speed)
+        
+        # Step 4 (Optional): Run security checks if any check flags were provided
+        if run_checks:
+            print(f"\n\033[96m[*] Running Security Checks...\033[0m")
+            runner = CheckRunner()
+            
+            for ip in target_ips:
+                # Only run checks on hosts that are UP
+                host_data = scan_results.get("hosts", {}).get(ip, {})
+                if host_data.get("status") != "up":
+                    continue
+                
+                open_ports = [p["port"] for p in host_data.get("ports", [])]
+                check_results = []
+                
+                # Run FTP checks
+                if args.all or args.ftp:
+                    from checks.network_checks import check_ftp
+                    ftp_port = 21 if 21 in open_ports else None
+                    if ftp_port:
+                        print(f"  [{ip}] Checking FTP (port {ftp_port})...")
+                        check_results.append(check_ftp(ip, ftp_port))
+                    else:
+                        print(f"  [{ip}] FTP port 21 not open, skipping FTP check.")
+                
+                # Run SMB checks
+                if args.all or args.smb:
+                    from checks.network_checks import check_smb
+                    smb_port = 445 if 445 in open_ports else None
+                    if smb_port:
+                        print(f"  [{ip}] Checking SMB (port {smb_port})...")
+                        check_results.append(check_smb(ip, smb_port))
+                    else:
+                        print(f"  [{ip}] SMB port 445 not open, skipping SMB check.")
+                
+                # Run HTTP checks
+                if args.all or args.http:
+                    from checks.web_checks import check_http, check_security_headers
+                    http_port = 80 if 80 in open_ports else (8080 if 8080 in open_ports else None)
+                    if http_port:
+                        print(f"  [{ip}] Checking HTTP (port {http_port})...")
+                        check_results.append(check_http(ip, http_port))
+                        print(f"  [{ip}] Checking Security Headers (port {http_port})...")
+                        check_results.append(check_security_headers(ip, http_port))
+                    else:
+                        print(f"  [{ip}] HTTP port 80/8080 not open, skipping HTTP checks.")
+                
+                # Add check results to the scan report
+                if check_results:
+                    scan_results["hosts"][ip]["security_checks"] = check_results
+                    
+                    # Print summary
+                    vuln_count = sum(1 for c in check_results if c.get("vulnerable"))
+                    print(f"\n  \033[93m[!] {ip}: {vuln_count} vulnerability/misconfig found out of {len(check_results)} checks.\033[0m")
+                    for c in check_results:
+                        status_color = "\033[91m" if c.get("vulnerable") else "\033[92m"
+                        vuln_label = "VULNERABLE" if c.get("vulnerable") else "OK"
+                        print(f"    {status_color}[{vuln_label}]\033[0m {c.get('service', 'N/A')}: {c.get('description', 'N/A')}")
         
         # Save the results to the specified JSON file for reporting
         with open(args.output, 'w') as json_file:
