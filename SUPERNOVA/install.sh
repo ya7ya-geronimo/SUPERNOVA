@@ -16,9 +16,6 @@ echo "[*] Cleaning Windows CRLF formats..."
 # This prevents the "bad interpreter" error when running on Linux systems.
 sed -i 's/\r$//' main.py
 
-echo "[*] Installing Python dependencies..."
-pip3 install -r requirements.txt --break-system-packages 2>/dev/null || pip3 install -r requirements.txt
-
 echo "[*] Installing SUPERNOVA Scanner..."
 
 # 3. Execution Permissions

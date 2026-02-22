@@ -1,5 +1,10 @@
 import socket
-from smb.SMBConnection import SMBConnection
+
+try:
+    from smb.SMBConnection import SMBConnection
+    HAS_PYSMB = True
+except ImportError:
+    HAS_PYSMB = False
 
 def check_smb(target: str, port: int = 445) -> dict:
     """
@@ -11,6 +16,11 @@ def check_smb(target: str, port: int = 445) -> dict:
         "status": "Closed",
         "description": "Port is closed"
     }
+    
+    if not HAS_PYSMB:
+        result["status"] = "Skipped"
+        result["description"] = "pysmb library not installed. Run: pip install pysmb"
+        return result
     
     try:
         # Pysmb requires a client name and server name (can be IP)

@@ -19,7 +19,7 @@ def run_scan(target_ips, scope_name, ports_to_scan, timeout_sec=1.0):
     # Initialize the base structure for the JSON report
     scan_results = {
         "metadata": {
-            "team": "SUPERNOVA",
+            "team": "ٍSUPERNOVA",
             "scope": scope_name,
             "time": scan_time,
             "user": current_user
@@ -73,7 +73,7 @@ def run_scan(target_ips, scope_name, ports_to_scan, timeout_sec=1.0):
             banner = grab_banner(ip, port, timeout_sec=timeout_sec)
             
             # Map the banner to a known service and version using the detection module
-            service, version = detect_service_and_version(banner, port, target_ip=ip)
+            service, version = detect_service_and_version(banner, port)
             
             # Append the detected details to the JSON report dictionary
             scan_results["hosts"][ip]["ports"].append({
