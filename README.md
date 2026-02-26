@@ -29,7 +29,7 @@ a few specific modules are required for advanced security checks.
 
 1. Clone the repository or extract the project folder:
    ```bash
-   git clone [https://github.com/ya7ya-geronimo/SUPERNOVA.git](https://github.com/ya7ya-geronimo/SUPERNOVA.git)
+   git clone https://github.com/ya7ya-geronimo/SUPERNOVA
    cd SUPERNOVA
 
 ```
