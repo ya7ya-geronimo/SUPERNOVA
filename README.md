@@ -215,6 +215,6 @@ PORT     | SERVICE    | VERSION
 
 This project was designed and developed from scratch as a graduation project for the Green Circle PenTest Internship.
 
-* **Malek Al Zaben** — Core Engine, CLI Architecture, `main.py`, README.md.
+* **Core Engine, CLI Architecture, `main.py`, README.md.
 * **Security Checks & Vulnerability Assessment** — `checks/` module: FTP, SMB, HTTP, Telnet, RDP checks, CheckRunner, integration tests.
 * **CVE Correlation & Reporting Logic** — CVE mapping and report generation.
